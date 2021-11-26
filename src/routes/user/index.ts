@@ -1,37 +1,99 @@
 import { Router, Request, Response } from "express";
 import loginCheck from "../middlewares/loginCheck";
 import * as jwt from "jsonwebtoken";
+import { Join, Login, User } from "./types";
+import UserModel from "../../models/user";
+import convertHash from "../../utils/convertHash";
+import bcrypt from "bcrypt";
 
 const UserRouter = Router();
 
-UserRouter.post("/", (req: Request, res: Response, next) => {
+UserRouter.post("/", async (req: Request, res: Response, next) => {
+  const { username, password } = <Login>req.body;
   try {
-    const token = jwt.sign(
-      {
-        username: "username",
+    const user = await UserModel.findOne({
+      where: {
+        username: username,
       },
-      "secret",
-      {
-        expiresIn: "1h",
-        issuer: "formegusto",
-      }
-    );
+    });
+    if (!user) {
+      return res.status(403).json({
+        status: false,
+        message: "잘못된 로그인 정보 입니다.",
+      });
+    }
+
+    const validPw = await bcrypt.compare(password, user.password);
+    if (!validPw) {
+      return res.status(403).json({
+        status: false,
+        message: "잘못된 로그인 정보 입니다.",
+      });
+    }
+
+    const _user = <User>user.get({ plain: true });
+    delete _user.password;
+    const token = jwt.sign(_user, process.env.JWT_SECRET!, {
+      expiresIn: "3h",
+      issuer: "korea electricity technology institute.",
+    });
 
     return res.status(200).json({
-      message: "토큰이 발급되었습니다.",
-      token,
+      status: true,
+      token: token,
+      user: _user,
     });
-  } catch (err) {}
+  } catch (err) {
+    return next(err);
+  }
 });
 
-UserRouter.post("/join", (req: Request, res: Response, next) => {
-  res.send("user join");
+UserRouter.post("/join", async (req: Request, res: Response, next) => {
+  const joinInfo = <Join>req.body;
+
+  try {
+    const isExist = await UserModel.findOne({
+      where: {
+        username: joinInfo.username,
+      },
+    });
+
+    if (isExist) {
+      return res.status(403).json({
+        status: false,
+        message: "이미 가입된 계정 입니다.",
+      });
+    }
+
+    const hashJoin = <Join>(
+      await convertHash<Join>(joinInfo, ["username", "nickname"])
+    );
+    const user = await UserModel.create(hashJoin);
+
+    const _user = <User>user.get({ plain: true });
+    delete _user.password;
+
+    const token = jwt.sign(_user, process.env.JWT_SECRET!, {
+      expiresIn: "3h",
+      issuer: "korea electricity technology institute.",
+    });
+
+    return res.status(201).json({
+      status: true,
+      token: token,
+      user: _user,
+    });
+  } catch (err) {
+    return next(err);
+  }
 });
 
 UserRouter.get("/check", loginCheck, (req: Request, res: Response, next) => {
   return res.status(200).json({
-    message: "U'r Token",
-    ...req.decodedUser,
+    status: true,
+    user: {
+      ...req.decodedUser,
+    },
   });
 });
 

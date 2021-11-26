@@ -6,14 +6,16 @@ dotenv.config();
 
 function loginCheck(req: Request, res: Response, next: NextFunction) {
   try {
-    const secret = "secret";
+    const secret = process.env.JWT_SECRET;
     const token = req.headers.authorization;
+
     if (token == null) {
       throw new Error("login required");
     } else {
       const decoded = jwt.verify(token, secret!);
       req.decodedUser = decoded as any;
     }
+
     return next();
   } catch (err: any) {
     if (err.message == "login required") {
