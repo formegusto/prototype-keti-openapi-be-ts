@@ -7,6 +7,7 @@ import {
 } from "sequelize";
 import ApiGroupModel from "../apiGroup";
 import UserModel from "../user";
+import UserOpenapi from "../userOpenapi";
 import { OpenapiAttributes, OpenapiCreationAttributes } from "./types";
 
 const attributes: ModelAttributes = {
@@ -81,7 +82,9 @@ class OpenapiModel
       foreignKey: "apiGroupId",
     });
     OpenapiModel.belongsToMany(UserModel, {
-      through: "UserOpenapi",
+      through: UserOpenapi,
+      as: { singular: "User", plural: "Users" },
+      foreignKey: "openapiId",
     });
   }
 }
