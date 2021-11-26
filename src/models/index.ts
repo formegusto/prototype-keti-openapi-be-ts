@@ -1,7 +1,8 @@
 import { Sequelize } from "sequelize";
 import dotenv from "dotenv";
-import { UserModel } from "./user";
-import User from "./user";
+import UserModel from "./user";
+import ApiGroupModel from "./apiGroup";
+import OpenapiModel from "./openapi";
 
 dotenv.config();
 
@@ -17,12 +18,8 @@ const sequelize = new Sequelize(database!, username!, password!, {
   dialect: "mysql",
 });
 
-class KETIDB {
-  User: typeof UserModel;
-  constructor() {
-    this.User = User(sequelize);
-  }
-}
-const db = new KETIDB();
+UserModel.initConfig(sequelize);
+ApiGroupModel.initConfig(sequelize);
+OpenapiModel.initConfig(sequelize);
 
-export { sequelize, db };
+export default sequelize;

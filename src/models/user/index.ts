@@ -1,7 +1,7 @@
-import { Model, DataTypes, Sequelize } from "sequelize";
+import { Model, DataTypes, Sequelize, ModelAttributes } from "sequelize";
 import { UserAttributes, UserCreationAttributes } from "./types";
 
-const attributes = {
+const attributes: ModelAttributes = {
   id: {
     type: DataTypes.INTEGER.UNSIGNED,
     autoIncrement: true,
@@ -9,9 +9,16 @@ const attributes = {
   },
   username: {
     type: DataTypes.STRING,
+    allowNull: false,
+    unique: true,
   },
   password: {
     type: DataTypes.STRING,
+    allowNull: false,
+  },
+  nickname: {
+    type: DataTypes.STRING,
+    allowNull: false,
   },
 };
 
@@ -19,19 +26,25 @@ export class UserModel
   extends Model<UserAttributes, UserCreationAttributes>
   implements UserAttributes
 {
-  // User Attributes
-  public id!: number;
+  // attributes
+  public readonly id!: number;
   public username!: string;
   public password!: string;
+  public nickname!: string;
 
   // timestamps
   public readonly createdAt!: Date;
   public readonly updatedAt!: Date;
+
+  // assoctiations
+
+  // config func
+  public static initConfig(sequelize: Sequelize) {
+    UserModel.init(attributes, {
+      sequelize,
+      modelName: "user",
+    });
+  }
 }
 
-export default function User(sequelize: Sequelize): typeof UserModel {
-  return UserModel.init(attributes, {
-    sequelize,
-    modelName: "user",
-  });
-}
+export default UserModel;
