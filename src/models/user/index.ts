@@ -6,7 +6,7 @@ import {
   Association,
 } from "sequelize";
 import OpenapiModel from "../openapi";
-import UserOpenapi from "../userOpenapi";
+import UserOpenapiModel from "../userOpenapi";
 import { UserAttributes, UserCreationAttributes } from "./types";
 
 const attributes: ModelAttributes = {
@@ -60,7 +60,7 @@ export class UserModel
   }
   public static associationsConfig() {
     UserModel.belongsToMany(OpenapiModel, {
-      through: UserOpenapi,
+      through: UserOpenapiModel,
       as: { singular: "Api", plural: "Apis" },
       foreignKey: "userId",
     });

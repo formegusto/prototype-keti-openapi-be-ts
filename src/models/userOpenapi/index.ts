@@ -9,7 +9,7 @@ const attributes: ModelAttributes = {
   },
 };
 
-class UserOpenapi extends Model implements UserOpenapiAttributes {
+class UserOpenapiModel extends Model implements UserOpenapiAttributes {
   // attributes
   public readonly userId!: number;
   public readonly openapiId!: number;
@@ -21,7 +21,7 @@ class UserOpenapi extends Model implements UserOpenapiAttributes {
 
   // config func
   public static initConfig(sequelize: Sequelize) {
-    UserOpenapi.init(attributes, {
+    UserOpenapiModel.init(attributes, {
       sequelize,
       modelName: "userOpenapi",
       tableName: "UserOpenapi",
@@ -29,4 +29,4 @@ class UserOpenapi extends Model implements UserOpenapiAttributes {
   }
 }
 
-export default UserOpenapi;
+export default UserOpenapiModel;

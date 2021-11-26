@@ -3,7 +3,8 @@ import dotenv from "dotenv";
 import UserModel from "./user";
 import ApiGroupModel from "./apiGroup";
 import OpenapiModel from "./openapi";
-import UserOpenapi from "./userOpenapi";
+import UserOpenapiModel from "./userOpenapi";
+import { RequestDocumentModel, ResponseDocumentModel } from "./apiDocument";
 
 dotenv.config();
 
@@ -22,7 +23,9 @@ const sequelize = new Sequelize(database!, username!, password!, {
 UserModel.initConfig(sequelize);
 ApiGroupModel.initConfig(sequelize);
 OpenapiModel.initConfig(sequelize);
-UserOpenapi.initConfig(sequelize);
+UserOpenapiModel.initConfig(sequelize);
+RequestDocumentModel.initConfig(sequelize);
+ResponseDocumentModel.initConfig(sequelize);
 
 UserModel.associationsConfig();
 ApiGroupModel.associationsConfig();

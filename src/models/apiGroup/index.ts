@@ -1,6 +1,10 @@
 import {
   Association,
   DataTypes,
+  HasManyAddAssociationMixin,
+  HasManyCreateAssociationMixin,
+  HasManyGetAssociationsMixin,
+  HasManySetAssociationsMixin,
   Model,
   ModelAttributes,
   Sequelize,
@@ -40,6 +44,11 @@ class ApiGroupModel
   public readonly updatedAt!: Date;
 
   // associations
+  public getOpenapis!: HasManyGetAssociationsMixin<OpenapiModel>;
+  public setOpenapis!: HasManySetAssociationsMixin<OpenapiModel, "id">;
+  public addOpenapi!: HasManyAddAssociationMixin<OpenapiModel, "id">;
+  public createOpenapi!: HasManyCreateAssociationMixin<OpenapiModel>;
+
   public readonly openapis?: OpenapiModel[];
   public static associations: {
     openapis: Association<ApiGroupModel, OpenapiModel>;
