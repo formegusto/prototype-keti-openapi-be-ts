@@ -1,4 +1,11 @@
-import { Model, DataTypes, Sequelize, ModelAttributes } from "sequelize";
+import {
+  Model,
+  DataTypes,
+  Sequelize,
+  ModelAttributes,
+  Association,
+} from "sequelize";
+import OpenapiModel from "../openapi";
 import { UserAttributes, UserCreationAttributes } from "./types";
 
 const attributes: ModelAttributes = {
@@ -37,12 +44,22 @@ export class UserModel
   public readonly updatedAt!: Date;
 
   // assoctiations
+  public readonly openapis?: OpenapiModel[];
+  public static associations: {
+    openapis: Association<UserModel, OpenapiModel>;
+  };
 
   // config func
   public static initConfig(sequelize: Sequelize) {
     UserModel.init(attributes, {
       sequelize,
       modelName: "user",
+      tableName: "Users",
+    });
+  }
+  public static associationsConfig() {
+    UserModel.belongsToMany(OpenapiModel, {
+      through: "UserOpenapi",
     });
   }
 }

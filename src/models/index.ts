@@ -22,4 +22,8 @@ UserModel.initConfig(sequelize);
 ApiGroupModel.initConfig(sequelize);
 OpenapiModel.initConfig(sequelize);
 
+UserModel.associationsConfig();
+ApiGroupModel.associationsConfig();
+OpenapiModel.associationsConfig();
+
 export default sequelize;

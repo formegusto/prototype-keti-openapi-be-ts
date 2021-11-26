@@ -6,6 +6,7 @@ import {
   Sequelize,
 } from "sequelize";
 import ApiGroupModel from "../apiGroup";
+import UserModel from "../user";
 import { OpenapiAttributes, OpenapiCreationAttributes } from "./types";
 
 const attributes: ModelAttributes = {
@@ -60,8 +61,10 @@ class OpenapiModel
 
   // associations
   public readonly apiGroup?: ApiGroupModel;
+  public readonly users?: UserModel[];
   public static associations: {
     apiGroup: Association<OpenapiModel, ApiGroupModel>;
+    users: Association<OpenapiModel, UserModel>;
   };
 
   // config func
@@ -76,6 +79,9 @@ class OpenapiModel
     OpenapiModel.belongsTo(ApiGroupModel, {
       targetKey: "id",
       foreignKey: "apiGroupId",
+    });
+    OpenapiModel.belongsToMany(UserModel, {
+      through: "UserOpenapi",
     });
   }
 }
