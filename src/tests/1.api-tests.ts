@@ -16,6 +16,15 @@ async function ApiTests() {
   });
   console.log(openapi.get({ plain: true }));
 
+  const openapi_2 = await apiGroup.createOpenapi({
+    name: "test open_2",
+    title: "테스트 오픈입니다._2",
+    shortDescription: "짧은 글_2",
+    longDescription: "긴긴긴 글_2",
+    restUri: "http://_2",
+  });
+  console.log(openapi.get({ plain: true }));
+
   const header = await openapi.createRequestHeader({
     title: "나는 헤더다!",
     description: "헤더지롱!",
