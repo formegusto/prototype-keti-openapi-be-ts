@@ -8,10 +8,15 @@ type Openapi = {
   readonly apiId?: number;
   name?: string;
   title?: string;
-  shortyDescription?: string;
+  shortDescription?: string;
   longDescription?: string;
   restUri?: string;
   apiGroupId?: number;
 };
 
-export { ApiGroup, Openapi };
+type ApplyOpenapi = {
+  readonly apiId: number;
+  purpose: number;
+};
+
+export { ApiGroup, Openapi, ApplyOpenapi };

@@ -57,4 +57,9 @@ OpenapiRouter.get(
   }
 );
 
+OpenapiRouter.post(
+  "/apply",
+  async (req: Request, res: Response, next: NextFunction) => {}
+);
+
 export default OpenapiRouter;

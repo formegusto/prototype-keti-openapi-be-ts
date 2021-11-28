@@ -8,6 +8,7 @@ enum OpenapiStatus {
 type UserOpenapiAttributes = {
   readonly userId: number;
   readonly openapiId: number;
+  purpose: string;
   status: OpenapiStatus;
 };
 

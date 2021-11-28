@@ -2,6 +2,10 @@ import { Model, DataTypes, ModelAttributes, Sequelize } from "sequelize";
 import { OpenapiStatus, UserOpenapiAttributes } from "./types";
 
 const attributes: ModelAttributes = {
+  purpose: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
   status: {
     type: DataTypes.ENUM(OpenapiStatus.Active, OpenapiStatus.Inactive),
     allowNull: false,
@@ -13,6 +17,7 @@ class UserOpenapiModel extends Model implements UserOpenapiAttributes {
   // attributes
   public readonly userId!: number;
   public readonly openapiId!: number;
+  public purpose!: string;
   public status!: OpenapiStatus;
 
   // timestamps
