@@ -9,6 +9,7 @@ type UserOpenapiAttributes = {
   readonly userId: number;
   readonly openapiId: number;
   purpose: string;
+  key: string;
   status: OpenapiStatus;
 };
 

@@ -6,6 +6,11 @@ const attributes: ModelAttributes = {
     type: DataTypes.STRING,
     allowNull: false,
   },
+  key: {
+    type: DataTypes.STRING,
+    allowNull: true,
+    defaultValue: "",
+  },
   status: {
     type: DataTypes.ENUM(OpenapiStatus.Active, OpenapiStatus.Inactive),
     allowNull: false,
@@ -18,6 +23,7 @@ class UserOpenapiModel extends Model implements UserOpenapiAttributes {
   public readonly userId!: number;
   public readonly openapiId!: number;
   public purpose!: string;
+  public key!: string;
   public status!: OpenapiStatus;
 
   // timestamps

@@ -4,6 +4,9 @@ import {
   Sequelize,
   ModelAttributes,
   Association,
+  BelongsToManyCreateAssociationMixin,
+  BelongsToManyAddAssociationMixin,
+  BelongsToManyGetAssociationsMixin,
 } from "sequelize";
 import OpenapiModel from "../openapi";
 import UserOpenapiModel from "../userOpenapi";
@@ -24,10 +27,6 @@ const attributes: ModelAttributes = {
     type: DataTypes.STRING,
     allowNull: false,
   },
-  nickname: {
-    type: DataTypes.STRING,
-    allowNull: false,
-  },
 };
 
 export class UserModel
@@ -38,16 +37,19 @@ export class UserModel
   public readonly id!: number;
   public username!: string;
   public password!: string;
-  public nickname!: string;
 
   // timestamps
   public readonly createdAt!: Date;
   public readonly updatedAt!: Date;
 
+  public addApi!: BelongsToManyAddAssociationMixin<OpenapiModel, "id">;
+  public createApi!: BelongsToManyCreateAssociationMixin<OpenapiModel>;
+  public getApis!: BelongsToManyGetAssociationsMixin<OpenapiModel>;
+
   // assoctiations
-  public readonly openapis?: OpenapiModel[];
+  public readonly apis?: OpenapiModel[];
   public static associations: {
-    openapis: Association<UserModel, OpenapiModel>;
+    apis: Association<UserModel, OpenapiModel>;
   };
 
   // config func
@@ -61,7 +63,7 @@ export class UserModel
   public static associationsConfig() {
     UserModel.belongsToMany(OpenapiModel, {
       through: UserOpenapiModel,
-      as: { singular: "Api", plural: "Apis" },
+      as: { singular: "api", plural: "apis" },
       foreignKey: "userId",
     });
   }

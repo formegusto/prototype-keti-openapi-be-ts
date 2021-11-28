@@ -6,9 +6,9 @@ import UserModel from "../../models/user";
 import convertHash from "../../utils/convertHash";
 import bcrypt from "bcrypt";
 
-const UserRouter = Router();
+const UserRoutes = Router();
 
-UserRouter.post("/", async (req: Request, res: Response, next) => {
+UserRoutes.post("/", async (req: Request, res: Response, next) => {
   const { username, password } = <Login>req.body;
   try {
     const user = await UserModel.findOne({
@@ -48,7 +48,7 @@ UserRouter.post("/", async (req: Request, res: Response, next) => {
   }
 });
 
-UserRouter.post("/join", async (req: Request, res: Response, next) => {
+UserRoutes.post("/join", async (req: Request, res: Response, next) => {
   const joinInfo = <Join>req.body;
 
   try {
@@ -65,9 +65,7 @@ UserRouter.post("/join", async (req: Request, res: Response, next) => {
       });
     }
 
-    const hashJoin = <Join>(
-      await convertHash<Join>(joinInfo, ["username", "nickname"])
-    );
+    const hashJoin = <Join>await convertHash<Join>(joinInfo, ["username"]);
     const user = await UserModel.create(hashJoin);
 
     const _user = <User>user.get({ plain: true });
@@ -88,7 +86,22 @@ UserRouter.post("/join", async (req: Request, res: Response, next) => {
   }
 });
 
-UserRouter.get("/check", loginCheck, (req: Request, res: Response, next) => {
+UserRoutes.get("/apis", loginCheck, async (req: Request, res: Response) => {
+  const { username } = req.decodedUser!;
+  const user = await UserModel.findOne({
+    where: {
+      username,
+    },
+    include: [UserModel.associations.apis],
+  });
+
+  return res.status(200).json({
+    status: true,
+    apis: user?.apis,
+  });
+});
+
+UserRoutes.get("/check", loginCheck, (req: Request, res: Response) => {
   return res.status(200).json({
     status: true,
     user: {
@@ -97,4 +110,4 @@ UserRouter.get("/check", loginCheck, (req: Request, res: Response, next) => {
   });
 });
 
-export default UserRouter;
+export default UserRoutes;
