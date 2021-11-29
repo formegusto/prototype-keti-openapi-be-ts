@@ -26,32 +26,40 @@ async function ApiTests() {
   console.log(openapi.get({ plain: true }));
 
   const header = await openapi.createRequestHeader({
-    title: "나는 헤더다!",
-    description: "헤더지롱!",
+    title: "Authorization",
+    description: "발급받은 키를 넣어주시면 됩니다.",
     type: "STRING",
     isRequired: true,
   });
   console.log(header.get({ plain: true }));
 
   const pathParameter = await openapi.createRequestPathParameter({
-    title: "나는 페스파라미터다!",
-    description: "페스파라미터지롱!",
+    title: "id",
+    description: "특정 가구를 조회합니다.",
     type: "STRING",
-    isRequired: true,
+    isRequired: false,
   });
   console.log(pathParameter.get({ plain: true }));
 
   const queryParameter = await openapi.createRequestQueryParameter({
-    title: "나는 쿼리파라미터다!",
-    description: "쿼리파라미터지롱!",
-    type: "STRING",
-    isRequired: true,
+    title: "limit",
+    description: "몇 개의 데이터를 가지고 올 것인지 정의합니다.",
+    type: "NUMBER",
+    isRequired: false,
   });
   console.log(queryParameter.get({ plain: true }));
 
+  const queryParameter_2 = await openapi.createRequestQueryParameter({
+    title: "offset",
+    description: "몇 번째 페이지를 가지고 올 것인지 정의합니다.",
+    type: "NUMBER",
+    isRequired: false,
+  });
+  console.log(queryParameter_2.get({ plain: true }));
+
   const statusCode = await openapi.createResponseStatusCode({
     title: "200",
-    description: "성공 시, 나타납니다.",
+    description: "요청 성공 코드입니다.",
   });
   console.log(statusCode.get({ plain: true }));
 

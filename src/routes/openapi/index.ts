@@ -17,7 +17,7 @@ OpenapiRoutes.get(
         include: [
           {
             association: ApiGroupModel.associations.openapis,
-            attributes: ["name", "title", "shortDescription"],
+            attributes: ["id", "name", "title", "shortDescription"],
           },
         ],
       });

@@ -133,26 +133,29 @@ class OpenapiModel
     });
     OpenapiModel.belongsToMany(UserModel, {
       through: UserOpenapiModel,
-      as: { singular: "User", plural: "Users" },
+      as: { singular: "user", plural: "users" },
       foreignKey: "openapiId",
     });
 
     OpenapiModel.hasMany(RequestDocumentModel, {
-      as: "RequestHeader",
+      as: { singular: "requestHeader", plural: "requestHeaders" },
       scope: {
         scopes: "header",
       },
       constraints: false,
     });
     OpenapiModel.hasMany(RequestDocumentModel, {
-      as: "RequestPathParameter",
+      as: { singular: "requestPathParameter", plural: "requestPathParameters" },
       scope: {
         scopes: "path parameter",
       },
       constraints: false,
     });
     OpenapiModel.hasMany(RequestDocumentModel, {
-      as: "RequestQueryParameter",
+      as: {
+        singular: "requestQueryParameter",
+        plural: "requestQueryParameters",
+      },
       scope: {
         scopes: "query parameter",
       },
@@ -160,14 +163,14 @@ class OpenapiModel
     });
 
     OpenapiModel.hasMany(ResponseDocumentModel, {
-      as: "ResponseStatusCode",
+      as: { singular: "responseStatusCode", plural: "responseStatusCodes" },
       scope: {
         scopes: "status code",
       },
       constraints: false,
     });
     OpenapiModel.hasMany(ResponseDocumentModel, {
-      as: "ResponseJsonField",
+      as: { singular: "responseJsonField", plural: "responseJsonFields" },
       scope: {
         scopes: "json field",
       },

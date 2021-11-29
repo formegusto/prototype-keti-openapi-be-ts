@@ -4,6 +4,7 @@ import sequelize from "./models";
 import routes from "./routes";
 import dotenv from "dotenv";
 import ApiTests from "./tests/1.api-tests";
+import cors from "cors";
 
 dotenv.config();
 
@@ -16,6 +17,7 @@ sequelize.sync({ force: true }).then(async () => {
   await ApiTests();
 });
 
+app.use(cors());
 app.use(morgan("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
