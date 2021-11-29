@@ -102,8 +102,10 @@ UserRoutes.get("/apis", loginCheck, async (req: Request, res: Response) => {
 });
 
 UserRoutes.get("/check", loginCheck, (req: Request, res: Response) => {
+  const token = req.headers.authorization;
   return res.status(200).json({
     status: true,
+    token,
     user: {
       ...req.decodedUser,
     },
