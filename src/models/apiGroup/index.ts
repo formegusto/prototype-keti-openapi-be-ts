@@ -28,6 +28,10 @@ const attributes: ModelAttributes = {
     allowNull: false,
     unique: true,
   },
+  imageUrl: {
+    type: DataTypes.STRING,
+    allowNull: true,
+  },
 };
 
 class ApiGroupModel
@@ -38,6 +42,7 @@ class ApiGroupModel
   public readonly id!: number;
   public name!: string;
   public title!: string;
+  public imageUrl!: string;
 
   // timestamps
   public readonly createdAt!: Date;

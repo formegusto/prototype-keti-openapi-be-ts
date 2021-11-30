@@ -5,6 +5,7 @@ type ApiGroupAttributes = {
   readonly id?: number;
   name: string;
   title: string;
+  imageUrl: string;
   openapis?: OpenapiModel[];
 };
 

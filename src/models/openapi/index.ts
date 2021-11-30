@@ -12,7 +12,11 @@ import { RequestDocumentModel, ResponseDocumentModel } from "../apiDocument";
 import ApiGroupModel from "../apiGroup";
 import UserModel from "../user";
 import UserOpenapiModel from "../userOpenapi";
-import { OpenapiAttributes, OpenapiCreationAttributes } from "./types";
+import {
+  HTTPMETHODS,
+  OpenapiAttributes,
+  OpenapiCreationAttributes,
+} from "./types";
 
 const attributes: ModelAttributes = {
   id: {
@@ -37,9 +41,26 @@ const attributes: ModelAttributes = {
     type: DataTypes.TEXT,
     allowNull: false,
   },
+  method: {
+    type: DataTypes.ENUM(
+      HTTPMETHODS.GET,
+      HTTPMETHODS.POST,
+      HTTPMETHODS.PATCH,
+      HTTPMETHODS.PUT,
+      HTTPMETHODS.DELETE
+    ),
+    allowNull: false,
+  },
   restUri: {
     type: DataTypes.STRING,
     allowNull: false,
+  },
+  fullRequest: {
+    type: DataTypes.STRING,
+    allowNull: true,
+    get() {
+      return this.getDataValue("method") + " " + this.getDataValue("restUri");
+    },
   },
   apiGroupId: {
     type: DataTypes.INTEGER.UNSIGNED,
@@ -57,8 +78,10 @@ class OpenapiModel
   public title!: string;
   public shortDescription!: string;
   public longDescription!: string;
+  public method!: HTTPMETHODS;
   public restUri!: string;
   public apiGroupId!: number;
+  public fullRequest!: string;
 
   // timestamps
   public readonly createdAt!: Date;

@@ -7,6 +7,18 @@ import { ApiGroup, ApplyOpenapi, Openapi } from "./types";
 
 const OpenapiRoutes = Router();
 
+OpenapiRoutes.get("/", async (req: Request, res: Response) => {
+  const apiGroup = await ApiGroupModel.findAll({
+    attributes: [["id", "groupId"], "name", "title", "imageUrl"],
+    include: [ApiGroupModel.associations.openapis],
+  });
+
+  return res.status(200).json({
+    status: true,
+    apiGroup,
+  });
+});
+
 OpenapiRoutes.get(
   "/:groupId",
   async (req: Request, res: Response, next: NextFunction) => {
