@@ -5,7 +5,7 @@ import routes from "./routes";
 import dotenv from "dotenv";
 import ApiTests from "./tests/1.api-tests";
 import cors from "cors";
-import path from "path";
+import mongooseInit from "./mongoose";
 
 dotenv.config();
 
@@ -14,9 +14,12 @@ const app: express.Application = express();
 
 sequelize.sync({ force: true }).then(async () => {
   console.log("[sequelize] synchronizing success :)");
-
   await ApiTests();
 });
+
+(async function () {
+  await mongooseInit("keti_pattern_recognition");
+})();
 
 app.use(cors());
 app.use(morgan("dev"));
