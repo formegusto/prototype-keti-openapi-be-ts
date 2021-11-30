@@ -36,7 +36,17 @@ AdminOpenapiRoutes.put(
         status: OpenapiStatus.Active,
         key,
       });
-    } catch (err) {}
+
+      return res.status(200).json({
+        status: true,
+        message: "승인 되었습니다.",
+      });
+    } catch (err: any) {
+      return res.status(403).json({
+        status: false,
+        message: err.message,
+      });
+    }
   }
 );
 

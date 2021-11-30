@@ -4,6 +4,11 @@ import OpenapiModel from "../../models/openapi";
 import UserModel from "../../models/user";
 import loginCheck from "../middlewares/loginCheck";
 import { ApiGroup, ApplyOpenapi, Openapi } from "./types";
+import url from "url";
+import { OpenapiStatus } from "../../models/userOpenapi/types";
+import { Includeable } from "sequelize";
+import UserOpenapiModel from "../../models/userOpenapi";
+import getUserByDB from "../middlewares/getUserByDB";
 
 const OpenapiRoutes = Router();
 
@@ -18,6 +23,98 @@ OpenapiRoutes.get("/", async (req: Request, res: Response) => {
     apiGroup,
   });
 });
+
+OpenapiRoutes.get(
+  "/user",
+  loginCheck,
+  getUserByDB,
+  async (req: Request, res: Response) => {
+    const { query } = url.parse(req.url, true);
+    const applyStatus = [OpenapiStatus.Active];
+
+    if (query["containApply"]) applyStatus.push(OpenapiStatus.Inactive);
+
+    const useApisId = await UserOpenapiModel.findAll({
+      where: {
+        userId: req.decodedUser?.id,
+        status: applyStatus,
+      },
+      attributes: ["openapiId"],
+      raw: true,
+    });
+    const useApisIdNumbers = useApisId.map((_) => _.openapiId);
+
+    const appendOpenApiInclude: Includeable[] = [];
+
+    if (query["containUser"])
+      appendOpenApiInclude.push({
+        association: OpenapiModel.associations.users,
+        where: {
+          id: req.decodedUser?.id,
+        },
+      });
+    if (query["containPathQueryParameter"]) {
+      appendOpenApiInclude.push(
+        OpenapiModel.associations.requestPathParameters
+      );
+      appendOpenApiInclude.push(
+        OpenapiModel.associations.requestQueryParameters
+      );
+    }
+
+    const apiGroup = await ApiGroupModel.findAll({
+      include: [
+        {
+          association: ApiGroupModel.associations.openapis,
+          where: {
+            id: useApisIdNumbers,
+          },
+          include: appendOpenApiInclude,
+        },
+      ],
+    });
+    return res.status(200).json({
+      status: 200,
+      apiGroup,
+    });
+  }
+);
+
+OpenapiRoutes.get(
+  "/user/:apiId",
+  loginCheck,
+  getUserByDB,
+  async (req: Request, res: Response) => {
+    const { query } = url.parse(req.url, true);
+    const { apiId } = <Openapi>req.params;
+
+    const appendOpenApiInclude: Includeable[] = [];
+    if (query["containUser"])
+      appendOpenApiInclude.push({
+        association: OpenapiModel.associations.users,
+        where: {
+          id: req.decodedUser?.id,
+        },
+      });
+    if (query["containQueryParameter"]) {
+      appendOpenApiInclude.push(
+        OpenapiModel.associations.requestPathParameters
+      );
+      appendOpenApiInclude.push(
+        OpenapiModel.associations.requestQueryParameters
+      );
+    }
+
+    const openapi = await OpenapiModel.findByPk(apiId, {
+      include: appendOpenApiInclude,
+    });
+
+    return res.status(200).json({
+      status: 200,
+      openapi,
+    });
+  }
+);
 
 OpenapiRoutes.get(
   "/:groupId",

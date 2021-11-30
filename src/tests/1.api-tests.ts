@@ -9,7 +9,7 @@ async function ApiTests() {
     imageUrl: "http://localhost:5000/images/energy.png",
   });
   console.log(apiGroup.get({ plain: true }));
-  await ApiGroupModel.create({
+  const apiGroup_2 = await ApiGroupModel.create({
     name: "smart_factory",
     title: "Smart Factory",
     imageUrl: "http://localhost:5000/images/smartfactory.png",
@@ -49,6 +49,24 @@ async function ApiTests() {
     restUri: "http://_2",
   });
   console.log(openapi.get({ plain: true }));
+
+  const openapi_3 = await apiGroup_2.createOpenapi({
+    name: "test open_3",
+    title: "테스트 오픈입니다._3",
+    shortDescription: "짧은 글_3",
+    longDescription: "긴긴긴 글_3",
+    method: HTTPMETHODS.GET,
+    restUri: "http://_3",
+  });
+
+  const openapi_4 = await apiGroup_2.createOpenapi({
+    name: "test open_4",
+    title: "테스트 오픈입니다._4",
+    shortDescription: "짧은 글_4",
+    longDescription: "긴긴긴 글_4",
+    method: HTTPMETHODS.GET,
+    restUri: "http://_4",
+  });
 
   const header = await openapi.createRequestHeader({
     title: "Authorization",
