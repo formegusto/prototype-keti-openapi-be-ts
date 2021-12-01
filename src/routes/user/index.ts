@@ -5,6 +5,7 @@ import { Join, Login, User } from "./types";
 import UserModel from "../../models/user";
 import convertHash from "../../utils/convertHash";
 import bcrypt from "bcrypt";
+import getUserByDB from "../middlewares/getUserByDB";
 
 const UserRoutes = Router();
 
@@ -111,5 +112,27 @@ UserRoutes.get("/check", loginCheck, (req: Request, res: Response) => {
     },
   });
 });
+
+UserRoutes.get(
+  "/detail",
+  loginCheck,
+  getUserByDB,
+  async (req: Request, res: Response) => {
+    try {
+      const user = req.decodedUser as UserModel;
+      const openapis = await user.getApis();
+
+      res.status(200).json({
+        status: true,
+        openapis,
+      });
+    } catch (err: any) {
+      res.status(500).json({
+        status: false,
+        message: err.message,
+      });
+    }
+  }
+);
 
 export default UserRoutes;

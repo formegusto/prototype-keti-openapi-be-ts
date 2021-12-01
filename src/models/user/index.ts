@@ -10,7 +10,7 @@ import {
 } from "sequelize";
 import OpenapiModel from "../openapi";
 import UserOpenapiModel from "../userOpenapi";
-import { UserAttributes, UserCreationAttributes } from "./types";
+import { UserAttributes, UserCreationAttributes, UserRole } from "./types";
 
 const attributes: ModelAttributes = {
   id: {
@@ -27,6 +27,11 @@ const attributes: ModelAttributes = {
     type: DataTypes.STRING,
     allowNull: false,
   },
+  role: {
+    type: DataTypes.ENUM(UserRole.USER, UserRole.ADMIN),
+    allowNull: false,
+    defaultValue: UserRole.USER,
+  },
 };
 
 export class UserModel
@@ -37,6 +42,7 @@ export class UserModel
   public readonly id!: number;
   public username!: string;
   public password!: string;
+  public role!: UserRole;
 
   // timestamps
   public readonly createdAt!: Date;
