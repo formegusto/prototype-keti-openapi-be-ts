@@ -79,6 +79,14 @@ async function ApiTests() {
   });
   console.log(header.get({ plain: true }));
 
+  await openapi_2.createRequestHeader({
+    title: "Authorization",
+    description: "발급받은 키를 넣어주시면 됩니다.",
+    type: "STRING",
+    isRequired: true,
+  });
+  console.log(header.get({ plain: true }));
+
   const pathParameter = await openapi.createRequestPathParameter({
     title: "id",
     description: "특정 가구를 조회합니다.",
@@ -110,11 +118,33 @@ async function ApiTests() {
   console.log(statusCode.get({ plain: true }));
 
   const jsonField = await openapi.createResponseJsonField({
-    title: "households",
+    title: "householdEnergy",
     description: "가구들의 목록입니다.",
-    type: "STRING[]",
+    type: "HouseholdEnergy[]",
   });
   console.log(jsonField.get({ plain: true }));
+
+  await openapi_2.createRequestQueryParameter({
+    title: "limit",
+    description: "몇 개의 데이터를 가지고 올 것인지 정의합니다.",
+    type: "NUMBER",
+    isRequired: false,
+  });
+  console.log(queryParameter.get({ plain: true }));
+
+  await openapi_2.createRequestQueryParameter({
+    title: "offset",
+    description: "몇 번째 페이지를 가지고 올 것인지 정의합니다.",
+    type: "NUMBER",
+    isRequired: false,
+  });
+  console.log(queryParameter_2.get({ plain: true }));
+
+  await openapi_2.createResponseStatusCode({
+    title: "200",
+    description: "요청 성공 코드입니다.",
+  });
+  console.log(statusCode.get({ plain: true }));
 
   const getTest = await OpenapiModel.findByPk(1);
   console.log(getTest?.get({ plain: true }));

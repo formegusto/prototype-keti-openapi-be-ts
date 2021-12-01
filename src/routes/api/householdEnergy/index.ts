@@ -5,7 +5,10 @@ import { CommonQuery } from "../common/types";
 const HouseholdPowerRoutes = Router();
 
 HouseholdPowerRoutes.get("/", async (req: Request, res: Response) => {
-  const { offset = "1", limit = "10" } = req.query;
+  let { offset = "1", limit = "10" } = req.query;
+
+  if (offset === "") offset = "1";
+  if (limit === "") limit = "10";
 
   const householdEnergy = await HouseholdEnergyModel.find(
     {},
@@ -21,6 +24,7 @@ HouseholdPowerRoutes.get("/", async (req: Request, res: Response) => {
   );
 
   return res.status(200).json({
+    href: req.protocol + "://" + req.get("host") + req.originalUrl,
     householdEnergy,
   });
 });

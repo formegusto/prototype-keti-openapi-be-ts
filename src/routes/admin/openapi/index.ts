@@ -14,18 +14,6 @@ AdminOpenapiRoutes.put(
     const { userId, apiId } = <ConfirmOpenapi>req.body;
 
     try {
-      const user = await UserModel.findByPk(userId, {
-        attributes: {
-          exclude: ["password"],
-        },
-      });
-      const strUser = JSON.stringify(user);
-      const strDate = Date.now().toString();
-      const strRan = Array.from({ length: 3 })
-        .map(() => Math.floor(Math.random() * 10000))
-        .join("");
-      const key = await bcrypt.hash(strUser + strDate + strRan, 12);
-
       const api = await UserOpenapiModel.findOne({
         where: {
           userId,
@@ -34,7 +22,6 @@ AdminOpenapiRoutes.put(
       });
       api?.update({
         status: OpenapiStatus.Active,
-        key,
       });
 
       return res.status(200).json({

@@ -4,7 +4,7 @@ import HouseholdPowerRoutes from "./householdEnergy";
 
 const ApiRoutes = Router();
 
-ApiRoutes.use("/householdPower", HouseholdPowerRoutes);
+ApiRoutes.use("/householdEnergy", HouseholdPowerRoutes);
 ApiRoutes.use("/clusterPattern", ClusterPatternRoutes);
 
 export default ApiRoutes;

@@ -9,6 +9,7 @@ import { OpenapiStatus } from "../../models/userOpenapi/types";
 import { Includeable } from "sequelize";
 import UserOpenapiModel from "../../models/userOpenapi";
 import getUserByDB from "../middlewares/getUserByDB";
+import bcrypt from "bcrypt";
 
 const OpenapiRoutes = Router();
 
@@ -188,6 +189,13 @@ OpenapiRoutes.post(
         throw new Error("Bad User Information.");
       }
 
+      const strUser = JSON.stringify(user);
+      const strDate = Date.now().toString();
+      const strRan = Array.from({ length: 3 })
+        .map(() => Math.floor(Math.random() * 10000))
+        .join("");
+      const key = await bcrypt.hash(strUser + strDate + strRan, 12);
+
       const openapi = await OpenapiModel.findByPk(apiId);
       if (!openapi) {
         throw new Error("Bad Api Information.");
@@ -196,6 +204,7 @@ OpenapiRoutes.post(
       await user.addApi(openapi, {
         through: {
           purpose,
+          key,
         },
       });
       return res.status(201).json({
