@@ -10,6 +10,7 @@ import {
 } from "sequelize";
 import OpenapiModel from "../openapi";
 import UserOpenapiModel from "../userOpenapi";
+import { OpenapiStatus } from "../userOpenapi/types";
 import { UserAttributes, UserCreationAttributes, UserRole } from "./types";
 
 const attributes: ModelAttributes = {
@@ -54,8 +55,13 @@ export class UserModel
 
   // assoctiations
   public readonly apis?: OpenapiModel[];
+  public readonly activeApis?: OpenapiModel[];
+  public readonly inactiveApis?: OpenapiModel[];
+
   public static associations: {
     apis: Association<UserModel, OpenapiModel>;
+    activeApis: Association<UserModel, OpenapiModel>;
+    inactiveApis: Association<UserModel, OpenapiModel>;
   };
 
   // config func
@@ -70,6 +76,26 @@ export class UserModel
     UserModel.belongsToMany(OpenapiModel, {
       through: UserOpenapiModel,
       as: { singular: "api", plural: "apis" },
+      foreignKey: "userId",
+    });
+    UserModel.belongsToMany(OpenapiModel, {
+      through: {
+        model: UserOpenapiModel,
+        scope: {
+          status: OpenapiStatus.Active,
+        },
+      },
+      as: { singular: "activeApi", plural: "activeApis" },
+      foreignKey: "userId",
+    });
+    UserModel.belongsToMany(OpenapiModel, {
+      through: {
+        model: UserOpenapiModel,
+        scope: {
+          status: OpenapiStatus.Inactive,
+        },
+      },
+      as: { singular: "inactiveApi", plural: "inactiveApis" },
       foreignKey: "userId",
     });
   }
