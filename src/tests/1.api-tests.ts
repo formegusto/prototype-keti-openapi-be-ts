@@ -31,22 +31,25 @@ async function ApiTests() {
   });
 
   const openapi = await apiGroup.createOpenapi({
-    name: "test open",
-    title: "테스트 오픈입니다.",
-    shortDescription: "짧은 글",
-    longDescription: "긴긴긴 글",
+    name: "household energy",
+    title: "398가구 1년치 전력 데이터",
+    shortDescription: "398가구의 1년치 전력 데이터를 제공합니다.",
+    longDescription:
+      "398가구의 1년치 전력 데이터를 제공합니다.398가구의 1년치 전력 데이터를 제공합니다.398가구의 1년치 전력 데이터를 제공합니다.398가구의 1년치 전력 데이터를 제공합니다.398가구의 1년치 전력 데이터를 제공합니다.398가구의 1년치 전력 데이터를 제공합니다.398가구의 1년치 전력 데이터를 제공합니다.398가구의 1년치 전력 데이터를 제공합니다.",
     method: HTTPMETHODS.GET,
-    restUri: "http://",
+    restUri: "http://localhost:5000/api/householdEnergy",
   });
   console.log(openapi.get({ plain: true }));
 
   const openapi_2 = await apiGroup.createOpenapi({
-    name: "test open_2",
-    title: "테스트 오픈입니다._2",
-    shortDescription: "짧은 글_2",
-    longDescription: "긴긴긴 글_2",
+    name: "cluster pattern",
+    title: "클러스터링 패턴",
+    shortDescription:
+      "398가구 1년치 전력데이터를 클러스터링 한 정보를 제공합니다.",
+    longDescription:
+      "398가구의 1년치 전력데이터에 KMeans Clustering Algorithm을 적용시켜, 가구별로 패턴 상 유사도가 높은 전력 패턴끼리의 군집화 데이터 입니다.",
     method: HTTPMETHODS.GET,
-    restUri: "http://_2",
+    restUri: "http://localhost:5000/api/clusterPattern",
   });
   console.log(openapi.get({ plain: true }));
 

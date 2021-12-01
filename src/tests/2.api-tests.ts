@@ -5,6 +5,8 @@ async function ApiTestTwo() {
     skip: 10,
     limit: 10,
   });
+
+  console.log("Household Energy data", householdEnergyData);
 }
 
 export default ApiTestTwo;

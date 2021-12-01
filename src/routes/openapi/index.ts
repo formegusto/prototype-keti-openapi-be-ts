@@ -96,7 +96,7 @@ OpenapiRoutes.get(
           id: req.decodedUser?.id,
         },
       });
-    if (query["containQueryParameter"]) {
+    if (query["containPathQueryParameter"]) {
       appendOpenApiInclude.push(
         OpenapiModel.associations.requestPathParameters
       );
