@@ -32,4 +32,27 @@ DocumentRoutes.get("/:groupId", async (req: Request, res: Response) => {
   }
 });
 
+DocumentRoutes.get("/api/:apiId", async (req: Request, res: Response) => {
+  const { apiId } = req.params;
+
+  try {
+    const openapi = await OpenapiModel.findByPk(apiId, {
+      include: [
+        OpenapiModel.associations.requestHeaders,
+        OpenapiModel.associations.requestPathParameters,
+        OpenapiModel.associations.requestQueryParameters,
+        OpenapiModel.associations.responseStatusCodes,
+        OpenapiModel.associations.responseJsonFields,
+      ],
+    });
+
+    return res.status(200).json({
+      status: true,
+      openapi,
+    });
+  } catch (err: any) {
+    console.log(err.message);
+  }
+});
+
 export default DocumentRoutes;

@@ -72,6 +72,7 @@ class OpenapiModel
   extends Model<OpenapiAttributes, OpenapiCreationAttributes>
   implements OpenapiAttributes
 {
+  [key: string]: any;
   // attributes
   public readonly id!: number;
   public name!: string;

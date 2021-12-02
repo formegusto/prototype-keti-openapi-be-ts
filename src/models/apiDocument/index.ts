@@ -1,4 +1,5 @@
 import { Model, DataTypes, ModelAttributes, Sequelize } from "sequelize";
+import { DocScopeType } from "../../routes/admin/apiDocument/types";
 import {
   RequestDocumentAttributes,
   RequestDocumentCreationAttributes,
@@ -68,7 +69,7 @@ class RequestDocumentModel
   public description!: string;
   public type!: string;
   public isRequired!: boolean;
-  public scopes!: string;
+  public scopes!: DocScopeType;
   public readonly openapiId!: number;
 
   // timestamps
@@ -94,7 +95,7 @@ class ResponseDocumentModel
   public description!: string;
   public type!: string;
   public isRequired!: boolean;
-  public scopes!: string;
+  public scopes!: DocScopeType;
   public readonly openapiId!: number;
 
   // timestamps
