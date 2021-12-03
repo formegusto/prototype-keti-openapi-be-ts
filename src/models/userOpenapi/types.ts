@@ -1,5 +1,3 @@
-import { Optional } from "sequelize/types";
-
 enum OpenapiStatus {
   Active = "ACTIVE",
   Inactive = "INACTIVE",
