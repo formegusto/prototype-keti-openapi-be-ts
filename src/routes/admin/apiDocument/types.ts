@@ -6,7 +6,7 @@ export type DocScopeType =
   | "json field";
 export enum DocScopes {
   "header" = "RequestHeader",
-  "path parameter" = "RequsetPathParameter",
+  "path parameter" = "RequestPathParameter",
   "query parameter" = "RequestQueryParameter",
   "status code" = "ResponseStatusCode",
   "json field" = "ResponseJsonField",
